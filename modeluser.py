@@ -1070,7 +1070,8 @@ class messagelist:
             tempresultlist = db1.select('messagelist',what='message_id,srcName,dstName,content',where=web.db.sqlwhere(user_frilist0))
             restr=''
             for x in tempresultlist:
-                restr = restr +'+'+str(x.message_id) + ':'+ x.srcName + '->'+x.dstName + ':'+ x.content
+                message_id = str(x.message_id)
+                restr = restr +'+'+str(message_id.zfill(4)) + ':'+ x.srcName + '->'+x.dstName + ':'+ x.content
             return render.messagelist(restr) 
         else:
             render = create_render(2)

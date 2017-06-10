@@ -1071,7 +1071,7 @@ class messagelist:
             restr=''
             for x in tempresultlist:
                 message_id = str(x.message_id)
-                restr = restr +'+'+str(message_id.zfill(4)) + ':'+ x.srcName + '->'+x.dstName + ':'+ x.content
+                restr = restr +'+'+str(message_id.zfill(6)) + ':'+ x.srcName + '->'+x.dstName + ':'+ x.content
             return render.messagelist(restr) 
         else:
             render = create_render(2)

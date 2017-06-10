@@ -9,8 +9,10 @@ from time import sleep
 import requests
 import json
 
-url = 'http://123.206.188.29:81/api_monitor'
-wxkey = 'Aw8mLzTTBp3uFhZ7CUeeVwvu3'
+
+url = 'http://127.0.0.1:8080/api_monitor'
+wxkey = 'lgjiimd8p0tSuF7o5bXZHubH4'
+
 level = [1]
 machine_num = 1
 

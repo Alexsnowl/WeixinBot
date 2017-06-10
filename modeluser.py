@@ -264,6 +264,7 @@ class WXLoginTh(wxlogin.WXLogin):
                             #print cmd_read
                             if len(cmd_read)== 4:
                                 self.read_log(msg['FromUserName'],cmd_read[0],cmd_read[1],cmd_read[2],cmd_read[3],srcName)
+
                                                        
                         resultfrilist = db1.select('friend_list', what='privilege', where=web.db.sqlwhere(user_frilist) )
                         for i in resultfrilist:
@@ -317,6 +318,7 @@ class WXLoginTh(wxlogin.WXLogin):
         #print path
         temp=0
         flag =0
+
         if os.path.exists(path):
             logfile = open(path,"r")
             line = logfile.readline()
@@ -325,16 +327,20 @@ class WXLoginTh(wxlogin.WXLogin):
                 if line.find(log_time)!=-1:
                     while line and temp <5:
                         self.webwxsendmsg(line, FromUserName)
+
                         db1.insert('messagelist',srcName='记录查询:',dstName=toName,content=line,wx_id=str(self.wx_id))
                         flag = 1
+
                         temp +=1
                         line = logfile.readline()
                     break
                 line = logfile.readline()
             logfile.close()
+
         if flag ==0 :
             self.webwxsendmsg('no record!', FromUserName)
             db1.insert('messagelist',srcName='记录查询:',dstName=toName,content='no record!',wx_id=str(self.wx_id))
+
             
 urls = (
     '/(.*)/','redirect',
@@ -1302,11 +1308,13 @@ class api_monitor:
              
         
         if cpu_state["cpu_percent_sum"] > 25 or mem_state["mem_percent"] > 65:
+
             gpmsgcontent = time_log + u'机器　'+ machine_num +u'　状态异常: '
             if cpu_state["cpu_percent_sum"] > 25:
                 gpmsgcontent +=u'cpu: '+str(cpu_state["cpu_percent_sum"])+'; '
             if mem_state["mem_percent"] > 65:
                 gpmsgcontent +=u'mem: '+str(mem_state["mem_percent"])+'; '
+
                 
             for i in ckboxvalue:
                 sql_select_fri = 'select * from friend_list where wx_id=(select id from example_users where wxkey=$wxkey) and privilege=$i'
@@ -1319,7 +1327,9 @@ class api_monitor:
                     sendMsg_result = webwx.sendMsg(dstName, gpmsgcontent)
                     if(sendMsg_result == 1):
                         sql_insert = 'insert into messagelist (srcName,dstName,content,wx_id) values ($srcName,$dstName,$content,$wx_id);'
+
                         db1.query(sql_insert, vars={'srcName':srcName,'dstName':dstName,'content':gpmsgcontent,'wx_id':wxid})
+
         
         dict_msg = {
             "level" : ckboxvalue,
